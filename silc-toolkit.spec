@@ -26,7 +26,7 @@ that has SILC support.
 %package	devel
 Summary:	SILC toolkit
 Group:		Development/Libraries
-Requires:	%{name}-libs = %{version}
+Requires:	%{name} = %{version}
 
 %description	devel
 SILC (Secure Internet Live Conferencing) is a protocol which provides

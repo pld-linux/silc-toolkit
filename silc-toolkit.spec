@@ -1,13 +1,14 @@
 %define	snap	beta1
 Summary:	SILC toolkit
+Summary(pl.UTF-8):	Zestaw narzędzi do SILC
 Name:		silc-toolkit
 Version:	1.1
 Release:	0.%{snap}.1
 License:	LGPL
-Group:		Networking
-URL:		http://silcnet.org/
+Group:		Libraries
 Source0:	http://silcnet.org/download/toolkit/sources/%{name}-%{version}-%{snap}.tar.bz2
 # Source0-md5:	aebfb27becdb48f70b2c69ed05629163
+URL:		http://silcnet.org/
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -20,43 +21,45 @@ IRC. Other than that they are nothing alike. Major differences are
 that SILC is secure what IRC is not in any way. The network model is
 also entirely different compared to IRC.
 
-This package provides development related files for any application
-that has SILC support.
+This package provides files for any application that has SILC support.
 
-%package	devel
-Summary:	SILC toolkit
+%description -l pl.UTF-8
+SILC (Secure Internet Live Conferencing) to protokół udostępniający
+usługi bezpiecznej konferencji poprzez Internet z niezabezpieczonym
+kanałem. SILC to oprogramowanie podobne do IRC, ale wewnętrznie bardzo
+się różniące. Największe podobieństwo między SILC a IRC jest takie, że
+oba udostępniają usługi konferencyjne oraz że SILC ma prawie takie
+same polecenia. Wszystko inne nie ma nic wspólnego. Największe różnice
+to to, że SILC jest bezpieczny, a IRC w żaden sposób. Model sieciowy
+też jest całkowicie inny.
+
+Ten pakiet udostępnia pliki dla wszystkich aplikacji z obsługą SILC.
+
+%package devel
+Summary:	SILC toolkit - development files
+Summary(pl.UTF-8):	Zestaw narzędzi SILC - pliki programistyczne
 Group:		Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
-%description	devel
-SILC (Secure Internet Live Conferencing) is a protocol which provides
-secure conferencing services on the Internet over insecure channel.
-SILC is IRC-like software although internally they are very different.
-The biggest similarity between SILC and IRC is that they both provide
-conferencing services and that SILC has almost the same commands as
-IRC. Other than that they are nothing alike. Major differences are
-that SILC is secure what IRC is not in any way. The network model is
-also entirely different compared to IRC.
-
+%description devel
 This package contains all development related files for developing or
 compiling applications using SILC protocol.
 
-%package	static
-Summary:	SILC toolkit
+%description devel -l pl.UTF-8
+Ten pakiet zawiera pliki programistyczne do rozwijania lub
+kompilowania aplikacji przy użyciu protokołu SILC.
+
+%package static
+Summary:	SILC toolkit - static libraries
+Summary(pl.UTF-8):	Zestaw narzędzi SILC - biblioteki statyczne
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{version}-%{release}
 
-%description	static
-SILC (Secure Internet Live Conferencing) is a protocol which provides
-secure conferencing services on the Internet over insecure channel.
-SILC is IRC-like software although internally they are very different.
-The biggest similarity between SILC and IRC is that they both provide
-conferencing services and that SILC has almost the same commands as
-IRC. Other than that they are nothing alike. Major differences are
-that SILC is secure what IRC is not in any way. The network model is
-also entirely different compared to IRC.
-
+%description static
 This package contains static SILC libraries.
+
+%description static -l pl.UTF-8
+Ten pakiet zawiera biblioteki statyczne SILC.
 
 %prep
 %setup -q -n %{name}-%{version}-%{snap}
@@ -79,7 +82,6 @@ This package contains static SILC libraries.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT%{_docdir}
 
 %{__make} -j1 install \
@@ -90,22 +92,22 @@ rm -rf $RPM_BUILD_ROOT%{_prefix}/doc
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
 %doc CHANGES README TODO doc/*.txt doc/*.conf doc/toolkit
+%attr(755,root,root) %{_libdir}/lib*.so.*.*.*
 %dir %{_libdir}/silc
 %dir %{_libdir}/silc/modules
 %attr(755,root,root) %{_libdir}/silc/modules/*.so
-%attr(755,root,root) %{_libdir}/lib*.so.*
 
 %files devel
 %defattr(644,root,root,755)
-%{_includedir}/silc
-%{_libdir}/lib*.so
+%attr(755,root,root) %{_libdir}/lib*.so
 %{_libdir}/lib*.la
+%{_includedir}/silc
 %{_pkgconfigdir}/*.pc
 
 %files static

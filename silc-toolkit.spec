@@ -1,13 +1,12 @@
-%define	snap	beta2
 Summary:	SILC toolkit
 Summary(pl.UTF-8):	Zestaw narzędzi do SILC
 Name:		silc-toolkit
-Version:	1.1
-Release:	0.%{snap}.1
+Version:	1.1.1
+Release:	1
 License:	LGPL
 Group:		Libraries
-Source0:	http://silcnet.org/download/toolkit/sources/%{name}-%{version}-%{snap}.tar.bz2
-# Source0-md5:	8811403075a40b402643f8551e8abc1d
+Source0:	http://silcnet.org/download/toolkit/sources/%{name}-%{version}.tar.bz2
+# Source0-md5:	cc10836e5ffc665eddd1bac6bc3b1382
 URL:		http://silcnet.org/
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -62,7 +61,7 @@ This package contains static SILC libraries.
 Ten pakiet zawiera biblioteki statyczne SILC.
 
 %prep
-%setup -q -n %{name}-%{version}-%{snap}
+%setup -q
 
 %build
 %configure \

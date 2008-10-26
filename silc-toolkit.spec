@@ -1,12 +1,12 @@
 Summary:	SILC toolkit
 Summary(pl.UTF-8):	Zestaw narzędzi do SILC
 Name:		silc-toolkit
-Version:	1.1.5
-Release:	3
+Version:	1.1.8
+Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	http://silcnet.org/download/toolkit/sources/%{name}-%{version}.tar.bz2
-# Source0-md5:	b8e3d70ea2080e37fade45ef20a0d71f
+# Source0-md5:	96235138d7228522b1fe1ff8fc371708
 Patch0:		%{name}-soname.patch
 URL:		http://silcnet.org/
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -98,7 +98,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGES README TODO doc/*.txt doc/*.conf doc/toolkit
+%doc ChangeLog README TODO doc/*.txt doc/*.conf doc/toolkit
 %attr(755,root,root) %{_libdir}/lib*.so.*.*.*
 %dir %{_libdir}/silc
 %dir %{_libdir}/silc/modules

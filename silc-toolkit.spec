@@ -9,7 +9,7 @@ Source0:	http://silcnet.org/download/toolkit/sources/%{name}-%{version}.tar.bz2
 # Source0-md5:	96235138d7228522b1fe1ff8fc371708
 Patch0:		%{name}-soname.patch
 URL:		http://silcnet.org/
-Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 SILC (Secure Internet Live Conferencing) is a protocol which provides

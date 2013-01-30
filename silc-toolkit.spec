@@ -1,17 +1,18 @@
-# TODO:
-# - Package tutorial and html docs
-#
 Summary:	SILC toolkit
 Summary(pl.UTF-8):	Zestaw narzędzi do SILC
 Name:		silc-toolkit
 Version:	1.1.10
-Release:	1
-License:	LGPL
+Release:	2
+License:	GPL v2 or BSD
 Group:		Libraries
 Source0:	http://silcnet.org/download/toolkit/sources/%{name}-%{version}.tar.bz2
 # Source0-md5:	f742b64064c40a2d22520549746cf2b4
 Patch0:		%{name}-soname.patch
+Patch1:		%{name}-link.patch
 URL:		http://silcnet.org/
+BuildRequires:	autoconf >= 2.52
+BuildRequires:	automake >= 1.0
+BuildRequires:	libtool
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -64,12 +65,32 @@ This package contains static SILC libraries.
 %description static -l pl.UTF-8
 Ten pakiet zawiera biblioteki statyczne SILC.
 
+%package doc
+Summary:	SILC toolkit documentation
+Summary(pl.UTF-8):	Dokumentacja do biblioteki narzędziowej SILC
+Group:		Documentation
+
+%description doc
+Extensive SILC toolkit documentation, including standard drafts, API
+documentation and tutorial.
+
+%description doc -l pl.UTF-8
+Obszerna dokumentacja biblioteki narzędziowej SILC, wraz ze szkicami
+standardów, dokumentacją API oraz przewodnikiem.
+
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
+%{__libtoolize}
+%{__aclocal}
+%{__autoconf}
+%{__autoheader}
+%{__automake}
 %configure \
+	--includedir=%{_includedir}/silc \
 	--with-logsdir=%{_var}/log/silc \
 	--with-simdir=%{_libdir}/silc/modules \
 	--with-silcd-pid-file=%{_var}/run/silcd.pid \
@@ -77,9 +98,8 @@ Ten pakiet zawiera biblioteki statyczne SILC.
 	--enable-shared \
 	--with-perl=module \
 	--with-perl-lib=vendor \
-	--without-silcd \
 	--without-irssi \
-	--includedir=%{_includedir}/silc
+	--without-silcd
 
 # parallel will succeed but produce broken library
 %{__make} -j1
@@ -91,7 +111,8 @@ install -d $RPM_BUILD_ROOT%{_docdir}
 %{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-rm -rf $RPM_BUILD_ROOT%{_prefix}/doc
+# packaged as %doc in base; the rest in -docs
+%{__rm} $RPM_BUILD_ROOT%{_docdir}/silc-toolkit/{BSD,COPYING,CREDITS,ChangeLog,CodingStyle,FAQ,GPL,INSTALL,README*,TODO}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -101,19 +122,30 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc ChangeLog README TODO doc/*.txt doc/*.conf doc/toolkit
-%attr(755,root,root) %{_libdir}/lib*.so.*.*.*
+%doc BSD COPYING CREDITS ChangeLog README TODO doc/*.conf
+%attr(755,root,root) %{_libdir}/libsilc-1.1.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libsilc-1.1.so.2
+%attr(755,root,root) %{_libdir}/libsilcclient-1.1.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libsilcclient-1.1.so.3
 %dir %{_libdir}/silc
 %dir %{_libdir}/silc/modules
-%attr(755,root,root) %{_libdir}/silc/modules/*.so
+%attr(755,root,root) %{_libdir}/silc/modules/*.sim.so
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/lib*.so
-%{_libdir}/lib*.la
+%attr(755,root,root) %{_libdir}/libsilc.so
+%attr(755,root,root) %{_libdir}/libsilcclient.so
+%{_libdir}/libsilc.la
+%{_libdir}/libsilcclient.la
 %{_includedir}/silc
-%{_pkgconfigdir}/*.pc
+%{_pkgconfigdir}/silc.pc
+%{_pkgconfigdir}/silcclient.pc
 
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/lib*.a
+%{_libdir}/libsilc.a
+%{_libdir}/libsilcclient.a
+
+%files doc
+%defattr(644,root,root,755)
+%{_docdir}/silc-toolkit

@@ -1,14 +1,14 @@
 Summary:	SILC toolkit
 Summary(pl.UTF-8):	Zestaw narzędzi do SILC
 Name:		silc-toolkit
-Version:	1.1.10
-Release:	3
+Version:	1.1.12
+Release:	1
 License:	GPL v2 or BSD
 Group:		Libraries
-Source0:	http://silcnet.org/download/toolkit/sources/%{name}-%{version}.tar.bz2
-# Source0-md5:	f742b64064c40a2d22520549746cf2b4
+#Source0Download: http://silcnet.org/dev.html
+Source0:	http://downloads.sourceforge.net/silc/%{name}-%{version}.tar.bz2
+# Source0-md5:	560dbf1125b031c39a148a26bbe1440d
 Patch0:		%{name}-soname.patch
-Patch1:		%{name}-link.patch
 URL:		http://silcnet.org/
 BuildRequires:	autoconf >= 2.52
 BuildRequires:	automake >= 1.0
@@ -81,7 +81,6 @@ standardów, dokumentacją API oraz przewodnikiem.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %build
 %{__libtoolize}
@@ -91,13 +90,13 @@ standardów, dokumentacją API oraz przewodnikiem.
 %{__automake}
 %configure \
 	--includedir=%{_includedir}/silc \
-	--with-logsdir=%{_var}/log/silc \
-	--with-simdir=%{_libdir}/silc/modules \
-	--with-silcd-pid-file=%{_var}/run/silcd.pid \
 	--enable-ipv6 \
 	--enable-shared \
+	--with-logsdir=%{_var}/log/silc \
 	--with-perl=module \
 	--with-perl-lib=vendor \
+	--with-simdir=%{_libdir}/silc/modules \
+	--with-silcd-pid-file=%{_var}/run/silcd.pid \
 	--without-irssi \
 	--without-silcd
 
@@ -110,6 +109,9 @@ install -d $RPM_BUILD_ROOT%{_docdir}
 
 %{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libsilc*.la
 
 # packaged as %doc in base; the rest in -docs
 %{__rm} $RPM_BUILD_ROOT%{_docdir}/silc-toolkit/{BSD,COPYING,CREDITS,ChangeLog,CodingStyle,FAQ,GPL,INSTALL,README*,TODO}
@@ -124,9 +126,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc BSD COPYING CREDITS ChangeLog README TODO doc/*.conf
 %attr(755,root,root) %{_libdir}/libsilc-1.1.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libsilc-1.1.so.2
+%attr(755,root,root) %ghost %{_libdir}/libsilc-1.1.so.4
 %attr(755,root,root) %{_libdir}/libsilcclient-1.1.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libsilcclient-1.1.so.3
+%attr(755,root,root) %ghost %{_libdir}/libsilcclient-1.1.so.4
 %dir %{_libdir}/silc
 %dir %{_libdir}/silc/modules
 %attr(755,root,root) %{_libdir}/silc/modules/*.sim.so
@@ -135,8 +137,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libsilc.so
 %attr(755,root,root) %{_libdir}/libsilcclient.so
-%{_libdir}/libsilc.la
-%{_libdir}/libsilcclient.la
 %{_includedir}/silc
 %{_pkgconfigdir}/silc.pc
 %{_pkgconfigdir}/silcclient.pc

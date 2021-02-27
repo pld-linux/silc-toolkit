@@ -13,6 +13,7 @@ URL:		http://silcnet.org/
 BuildRequires:	autoconf >= 2.52
 BuildRequires:	automake >= 1.0
 BuildRequires:	libtool
+BuildRequires:	rpm-build >= 4.6
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -69,6 +70,7 @@ Ten pakiet zawiera biblioteki statyczne SILC.
 Summary:	SILC toolkit documentation
 Summary(pl.UTF-8):	Dokumentacja do biblioteki narzędziowej SILC
 Group:		Documentation
+BuildArch:	noarch
 
 %description doc
 Extensive SILC toolkit documentation, including standard drafts, API

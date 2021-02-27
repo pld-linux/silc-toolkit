@@ -94,13 +94,7 @@ standardów, dokumentacją API oraz przewodnikiem.
 	--includedir=%{_includedir}/silc \
 	--enable-ipv6 \
 	--enable-shared \
-	--with-logsdir=%{_var}/log/silc \
-	--with-perl=module \
-	--with-perl-lib=vendor \
-	--with-simdir=%{_libdir}/silc/modules \
-	--with-silcd-pid-file=%{_var}/run/silcd.pid \
-	--without-irssi \
-	--without-silcd
+	--with-simdir=%{_libdir}/silc/modules
 
 # parallel will succeed but produce broken library
 %{__make} -j1

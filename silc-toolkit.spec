@@ -2,7 +2,7 @@ Summary:	SILC toolkit
 Summary(pl.UTF-8):	Zestaw narzędzi do SILC
 Name:		silc-toolkit
 Version:	1.1.12
-Release:	1
+Release:	2
 License:	GPL v2 or BSD
 Group:		Libraries
 #Source0Download: http://silcnet.org/dev.html
